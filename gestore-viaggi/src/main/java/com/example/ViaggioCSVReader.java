@@ -8,10 +8,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
 public class ViaggioCSVReader {
+
+    private static final Logger logger = LoggerFactory.getLogger(ViaggioCSVReader.class);
 
     public static void leggiCSVInserisciDB(String path) throws CsvValidationException {
         String query = "INSERT INTO viaggi (destinazione, data_partenza, data_ritorno, budget, attivita) VALUES (?, ?, ?, ?, ?)";
@@ -39,14 +44,14 @@ public class ViaggioCSVReader {
                     statement.executeUpdate();
                 }
 
-                System.out.println("Dati importati correttamente");
+                logger.info("Dati importati correttamente");
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Errore nell'inserimento dei dati", e);
             }
             
             
         }catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Errore nella lettura del file csv", e);
         }
     }
 
